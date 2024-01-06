@@ -1,0 +1,226 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+    SHOP
+    USER
+    ADMin
+}
+
+enum ProfileTheme {
+    DARK
+    LIGHT
+    SYSTEM
+}
+
+enum ShopTheme {
+    PRIMARY
+    SECONDARY
+    BLUE
+    YELLOW
+    PUBBLE
+    SKY
+}
+
+enum ShopImageType {
+    BANNER
+    AVATAR
+}
+
+enum ProductStatus {
+    OLD
+    NEW
+}
+
+// MODEL
+model Account {
+    id                String  @id @default(cuid())
+    userId            String
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String? @db.Text
+    access_token      String? @db.Text
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String? @db.Text
+    session_state     String?
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([provider, providerAccountId])
+}
+
+model User {
+    id            String    @id @default(cuid())
+    email         String
+    password      String?
+    name          String
+    emailVerified DateTime?
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+    shop          Shop?
+    roles         Role[]
+    profile       Profile?
+    Account       Account[]
+
+    @@unique([email])
+    @@index([email])
+}
+
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}
+
+model Profile {
+    userId          String       @id
+    phone           String?
+    addressProvince String?
+    addressDistrict String?
+    addressWard     String?
+    image           String?
+    User            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+    theme           ProfileTheme @default(LIGHT)
+    createdAt       DateTime     @default(now())
+    updatedAt       DateTime     @updatedAt
+}
+
+model Role {
+    id        String   @id @default(cuid())
+    userId    String
+    role      UserRole @default(USER)
+    User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Shop {
+    id        String       @id
+    User      User         @relation(fields: [id], references: [id], onDelete: Cascade)
+    profile   ShopProfile?
+    name      String       @unique
+    createdAt DateTime     @default(now())
+    updatedAt DateTime     @updatedAt
+    products  Product[]
+}
+
+model ShopProfile {
+    shopId            String      @id
+    Shop              Shop        @relation(fields: [shopId], references: [id], onDelete: Cascade)
+    images            ShopImage[]
+    theme             ShopTheme   @default(PRIMARY)
+    addressProvince   String
+    addressDistrict   String
+    addressWard       String
+    cardNumber        String
+    description       String
+    phone             String
+    registerPaymentId String
+    registerPayment   Payment     @relation(fields: [registerPaymentId], references: [id])
+    createdAt         DateTime    @default(now())
+    updatedAt         DateTime    @updatedAt
+}
+
+model ShopImage {
+    id            String      @id @default(cuid())
+    shopProfileId String
+    imageUrl      String
+    cloudPublicId String
+    format        String
+    shopProfile   ShopProfile @relation(fields: [shopProfileId], references: [shopId], onDelete: Cascade)
+    createdAt     DateTime    @default(now())
+    updatedAt     DateTime    @updatedAt
+}
+
+model Product {
+    id           String         @id @default(cuid())
+    name         String
+    shopId       String
+    shop         Shop           @relation(fields: [shopId], references: [id])
+    images       ProductImage[]
+    description  String
+    category     Category?      @relation(fields: [categoryId], references: [id])
+    categoryId   String?
+    detail       ProductDetail?
+    specialOffer SpecialOffer[]
+    createdAt    DateTime       @default(now())
+    updatedAt    DateTime       @updatedAt
+}
+
+model ProductDetail {
+    productId            String        @id
+    price                Decimal       @db.Money
+    brand                String?
+    origin               String?
+    expirationdate       DateTime?
+    inventory            Int
+    status               ProductStatus @default(NEW)
+    weightAfterPackaging Decimal
+    width                Decimal
+    height               Decimal
+    long                 Decimal
+    taxAmount            Decimal
+    product              Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model ProductImage {
+    id        String   @id @default(cuid())
+    Product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+    productId String?
+}
+
+model SpecialOffer {
+    id          String    @id @default(cuid())
+    Description String
+    discountPct Int       @default(0)
+    specialCode String
+    startDate   DateTime
+    endDate     DateTime
+    minQty      Decimal
+    maxQty      Decimal
+    products    Product[]
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+}
+
+model Category {
+    id               String   @id @default(cuid())
+    parentCategoryId String?
+    name             String
+    description      String
+    createdAt        DateTime @default(now())
+    updatedAt        DateTime @updatedAt
+    categoryId       String?
+
+    product Product[]
+
+    parentCategory Category?  @relation("subcategory", fields: [parentCategoryId], references: [id], onDelete: Cascade)
+    subCategories  Category[] @relation("subcategory")
+
+    @@index([name])
+}
+
+model Payment {
+    id            String        @id
+    payType       String
+    amount        Int
+    transId       BigInt
+    message       String
+    requestId     String
+    paymentOption String?
+    ShopProfile   ShopProfile[]
+}
