@@ -30,7 +30,7 @@ export default function Notfound({}) {
                 style={{ objectFit: "cover" }}
             ></Image>
             <h2 className="text-muted-foreground text-lg">
-                Không tìm thấy địa chỉ {window.location.pathname}
+                Không tìm thấy địa chỉ
             </h2>
             <div className="flex justify-center items-center gap-5">
                 <Button
