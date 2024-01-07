@@ -65,7 +65,10 @@ export const POST = async (req: NextRequest) => {
         if (momoResponse.resultCode === 0) {
             return NextResponse.json(momoResponse.shortLink);
         } else {
-            throw new InternalServerError("Can't get momo payUrl");
+            console.log({ momoResponse });
+            throw new InternalServerError(
+                `Can't get momo payUrl ${JSON.stringify(momoResponse)}`
+            );
         }
     } catch (error: any) {
         throw new InternalServerError(error.message);
