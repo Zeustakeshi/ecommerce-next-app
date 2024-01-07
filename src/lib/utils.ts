@@ -69,7 +69,9 @@ export const generateSignature = (
     }
 
     rawSignature = rawSignature.slice(0, -1);
+
     // Thực hiện tạo chữ ký bằng thuật toán sha256 và secretKey
+
     const signature = crypto
         .createHmac("sha256", secretKey)
         .update(rawSignature)

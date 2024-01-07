@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import Autoplay from "embla-carousel-autoplay";
-import { Edit } from "lucide-react";
+import { Divide, Edit } from "lucide-react";
 import { FC } from "react";
 import { buttonVariants } from "../ui/button";
 import UploadImageWrapper from "../wrappers/UploadImageWrapper";
@@ -35,18 +35,26 @@ const ShopBanner: FC<Props> = ({ className, canEdit, images }) => {
                 }}
                 className={cn("w-full relative", className)}
             >
-                <CarouselContent>
-                    {images.map((url, index) => (
-                        <CarouselItem key={index}>
-                            <div className=" max-h-[500px]">
-                                <img
-                                    src={url}
-                                    alt={`shop-banner-${index + 1}`}
-                                    className="w-full h-full object-contain object-center"
-                                />
-                            </div>
-                        </CarouselItem>
-                    ))}
+                <CarouselContent className="min-h-[500px]">
+                    {images.length > 0 ? (
+                        images.map((url, index) => (
+                            <CarouselItem key={index}>
+                                <div className=" max-h-[500px]">
+                                    <img
+                                        src={url}
+                                        alt={`shop-banner-${index + 1}`}
+                                        className="w-full h-full object-contain object-center"
+                                    />
+                                </div>
+                            </CarouselItem>
+                        ))
+                    ) : (
+                        <div className="w-full h-full flex justify-center items-center">
+                            <h4 className="my-8 text-lg ">
+                                Thêm banner của bạn
+                            </h4>
+                        </div>
+                    )}
                 </CarouselContent>
                 <CarouselPrevious />
                 <CarouselNext />
