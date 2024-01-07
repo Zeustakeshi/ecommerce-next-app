@@ -60,13 +60,13 @@ export const POST = async (req: NextRequest) => {
                 email: session.user.email!,
                 name: session.user.name!,
             },
-            orderDescription: `${validateShopInfo.data.name.toUpperCase()}_THANH_TOAN_PHI_MO_CUA_HANG`,
+            orderDescription: `${validateShopInfo.data.name.toUpperCase()} THANH TOAN PHI MO CUA HANG`,
         });
 
         if (momoResponse.resultCode === 0) {
             return NextResponse.json(momoResponse.shortLink);
         } else {
-            NextResponse.json({ error: "" });
+            NextResponse.json({ error: JSON.stringify(momoResponse) });
             console.log({ momoResponse });
             throw new InternalServerError(
                 `Can't get momo payUrl ${JSON.stringify(momoResponse)}`
