@@ -45,10 +45,9 @@ export const POST = async (req: NextRequest) => {
 
         /** CALL MOMO API GET PAY_URL */
         const momoResponse = await paymentWithMoMo({
-            ipnHost:
-                "https://ecommerce-next-app-git-fixbug-momo-zeustakeshi.vercel.app/api/checkout/momo_ipn",
+            ipnHost: req.nextUrl.origin,
             orderId: orderId,
-            redirectUrl: `https://ecommerce-next-app-git-fixbug-momo-zeustakeshi.vercel.app/payment-return/new-shop-checkout`,
+            redirectUrl: `${req.nextUrl.origin}/payment-return/new-shop-checkout`,
             items: [
                 {
                     name: "Đăng ký mở cửa hàng với Tdmu eStore",
@@ -67,6 +66,7 @@ export const POST = async (req: NextRequest) => {
         if (momoResponse.resultCode === 0) {
             return NextResponse.json(momoResponse.shortLink);
         } else {
+            NextResponse.json({ error: "" });
             console.log({ momoResponse });
             throw new InternalServerError(
                 `Can't get momo payUrl ${JSON.stringify(momoResponse)}`
