@@ -60,7 +60,7 @@ export const POST = async (req: NextRequest) => {
                 email: session.user.email!,
                 name: session.user.name!,
             },
-            orderDescription: `${validateShopInfo.data.name.toUpperCase()} THANH TOAN PHI MO CUA HANG`,
+            orderDescription: `${validateShopInfo.data.name.toUpperCase()}_THANH_TOAN_PHI_MO_CUA_HANG`,
         });
 
         if (momoResponse.resultCode === 0) {

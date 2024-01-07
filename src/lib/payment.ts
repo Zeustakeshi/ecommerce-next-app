@@ -129,8 +129,7 @@ export const paymentWithMoMo = async ({
         userInfo,
         deliveryInfo,
     };
-    console.log({ requestBody });
-
+    console.log({ requestBody, signature });
     // Thực hiện yêu cầu thanh toán sử dụng fetch
     const response = await fetch(`${process.env.MOMO_URL}/create`, {
         method: "POST",
