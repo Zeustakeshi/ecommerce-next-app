@@ -45,6 +45,7 @@ export const POST = async (req: NextRequest) => {
 
         /** CALL MOMO API GET PAY_URL */
         const momoResponse = await paymentWithMoMo({
+            ipnHost: req.nextUrl.origin,
             orderId: orderId,
             redirectUrl: `${req.nextUrl.origin}/payment-return/new-shop-checkout`,
             items: [

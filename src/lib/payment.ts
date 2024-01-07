@@ -1,7 +1,7 @@
 import { generateSignature, nanoid } from "./utils";
 
 type MomoPaymentOption = {
-    ipnHost?: string;
+    ipnHost: string;
     redirectUrl: string;
     items: {
         id?: string;
