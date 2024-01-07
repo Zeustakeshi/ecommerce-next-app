@@ -68,14 +68,16 @@ export const generateSignature = (
         rawSignature += `${key}=${sortedData[key]}&`;
     }
 
-    console.log({ rawSignature });
-
     rawSignature = rawSignature.slice(0, -1);
+
+    console.log({ rawSignature });
     // Thực hiện tạo chữ ký bằng thuật toán sha256 và secretKey
+
     const signature = crypto
         .createHmac("sha256", secretKey)
         .update(rawSignature)
         .digest("hex");
 
+    console.log({ secretKey, signature, rawSignature });
     return signature;
 };
