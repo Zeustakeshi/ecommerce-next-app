@@ -63,7 +63,7 @@ const RegisterForm = () => {
                     name="username"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Tên đăng nhập</FormLabel>
+                            <FormLabel>Tên tài khoản</FormLabel>
                             <FormControl>
                                 <Input
                                     placeholder="ví dụ: minhhieu"
