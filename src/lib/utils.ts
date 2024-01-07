@@ -70,7 +70,6 @@ export const generateSignature = (
 
     rawSignature = rawSignature.slice(0, -1);
 
-    console.log({ rawSignature });
     // Thực hiện tạo chữ ký bằng thuật toán sha256 và secretKey
 
     const signature = crypto
@@ -78,6 +77,5 @@ export const generateSignature = (
         .update(rawSignature)
         .digest("hex");
 
-    console.log({ secretKey, signature, rawSignature });
     return signature;
 };
