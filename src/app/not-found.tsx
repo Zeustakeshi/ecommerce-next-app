@@ -5,11 +5,14 @@ import { cn } from "@/lib/utils";
 import { Single_Day } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const singleDay = Single_Day({ weight: "400" });
 
 export default function Notfound({}) {
+    const pathname = usePathname();
+
     const router = useRouter();
     return (
         <div
@@ -29,8 +32,8 @@ export default function Notfound({}) {
                 alt="notfound"
                 style={{ objectFit: "cover" }}
             ></Image>
-            <h2 className="text-muted-foreground text-lg">
-                Không tìm thấy địa chỉ
+            <h2 className="text-muted-foreground texwindow.location.pathnamet-lg">
+                Không tìm thấy địa chỉ {pathname}
             </h2>
             <div className="flex justify-center items-center gap-5">
                 <Button
