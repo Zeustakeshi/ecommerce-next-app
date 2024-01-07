@@ -45,9 +45,10 @@ export const POST = async (req: NextRequest) => {
 
         /** CALL MOMO API GET PAY_URL */
         const momoResponse = await paymentWithMoMo({
-            ipnHost: req.nextUrl.origin,
+            ipnHost:
+                "https://ecommerce-next-app-git-fixbug-momo-zeustakeshi.vercel.app/api/checkout/momo_ipn",
             orderId: orderId,
-            redirectUrl: `${req.nextUrl.origin}/payment-return/new-shop-checkout`,
+            redirectUrl: `https://ecommerce-next-app-git-fixbug-momo-zeustakeshi.vercel.app/payment-return/new-shop-checkout`,
             items: [
                 {
                     name: "Đăng ký mở cửa hàng với Tdmu eStore",

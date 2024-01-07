@@ -68,6 +68,8 @@ export const generateSignature = (
         rawSignature += `${key}=${sortedData[key]}&`;
     }
 
+    console.log({ rawSignature });
+
     rawSignature = rawSignature.slice(0, -1);
     // Thực hiện tạo chữ ký bằng thuật toán sha256 và secretKey
     const signature = crypto
