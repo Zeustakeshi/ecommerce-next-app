@@ -1,4 +1,4 @@
-import LoginForm from "@/components/auth/LoginForm";
+import LoginForm from "@/components/forms/LoginForm";
 import ButtonLoginWithGoogle from "@/components/buttons/ButtonLoginWithGoogle";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";

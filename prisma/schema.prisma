@@ -36,11 +36,6 @@ enum ShopImageType {
     AVATAR
 }
 
-enum ProductStatus {
-    OLD
-    NEW
-}
-
 // MODEL
 model Account {
     id                String  @id @default(cuid())
@@ -148,67 +143,56 @@ model ShopImage {
 
 model Product {
     id           String         @id @default(cuid())
-    name         String
+    name         String?
     shopId       String
     shop         Shop           @relation(fields: [shopId], references: [id])
     images       ProductImage[]
-    description  String
-    category     Category?      @relation(fields: [categoryId], references: [id])
-    categoryId   String?
+    isPublic     Boolean
+    description  String?
+    category     Category?      @relation(fields: [categoryName], references: [name])
+    categoryName String?
     detail       ProductDetail?
-    specialOffer SpecialOffer[]
     createdAt    DateTime       @default(now())
     updatedAt    DateTime       @updatedAt
 }
 
 model ProductDetail {
-    productId            String        @id
-    price                Decimal       @db.Money
+    productId            String    @id
+    price                Decimal?  @db.Money
     brand                String?
     origin               String?
     expirationdate       DateTime?
-    inventory            Int
-    status               ProductStatus @default(NEW)
-    weightAfterPackaging Decimal
-    width                Decimal
-    height               Decimal
-    long                 Decimal
-    taxAmount            Decimal
-    product              Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+    inventory            Int?
+    isNew                Boolean?
+    weightAfterPackaging Decimal?
+    width                Decimal?
+    height               Decimal?
+    long                 Decimal?
+    taxAmount            Decimal?
+    product              Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model ProductImage {
-    id        String   @id @default(cuid())
-    Product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
-    productId String?
-}
-
-model SpecialOffer {
-    id          String    @id @default(cuid())
-    Description String
-    discountPct Int       @default(0)
-    specialCode String
-    startDate   DateTime
-    endDate     DateTime
-    minQty      Decimal
-    maxQty      Decimal
-    products    Product[]
-    createdAt   DateTime  @default(now())
-    updatedAt   DateTime  @updatedAt
+    id            String   @id @default(cuid())
+    productId     String
+    imageUrl      String
+    cloudPublicId String
+    format        String
+    Product       Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model Category {
-    id               String   @id @default(cuid())
-    parentCategoryId String?
-    name             String
-    description      String
-    createdAt        DateTime @default(now())
-    updatedAt        DateTime @updatedAt
-    categoryId       String?
+    name        String   @id
+    description String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    categoryId  String?
+    parentName  String?
+    keyword     String
 
     product Product[]
 
-    parentCategory Category?  @relation("subcategory", fields: [parentCategoryId], references: [id], onDelete: Cascade)
+    parentCategory Category?  @relation("subcategory", fields: [parentName], references: [name], onDelete: Cascade)
     subCategories  Category[] @relation("subcategory")
 
     @@index([name])

@@ -1,5 +1,5 @@
 "use client";
-import { uploadShopBannerAction } from "@/actions/update.action";
+import { uploadShopBannerAction } from "@/actions/upload.action";
 import {
     Carousel,
     CarouselContent,
@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import Autoplay from "embla-carousel-autoplay";
-import { Divide, Edit } from "lucide-react";
+import { Edit } from "lucide-react";
 import { FC } from "react";
 import { buttonVariants } from "../ui/button";
 import UploadImageWrapper from "../wrappers/UploadImageWrapper";

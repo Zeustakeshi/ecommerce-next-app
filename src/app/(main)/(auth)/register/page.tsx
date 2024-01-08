@@ -1,5 +1,5 @@
-import RegisterForm from "@/components/auth/RegisterForm";
 import ButtonLoginWithGoogle from "@/components/buttons/ButtonLoginWithGoogle";
+import RegisterForm from "@/components/forms/RegisterForm";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Chrome, Facebook } from "lucide-react";

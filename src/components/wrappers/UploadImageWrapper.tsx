@@ -21,8 +21,6 @@ import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import { DialogClose } from "@radix-ui/react-dialog";
-import { useFormState } from "react-dom";
-
 type Props = {
     children: ReactNode;
     multiple?: boolean;
@@ -35,6 +33,7 @@ type Props = {
         error?: string;
         success?: string;
     }>;
+    uploadPayload?: any;
 };
 
 const UploadImageWrapper: FC<Props> = (props) => {
@@ -81,6 +80,8 @@ const UploadImageWrapper: FC<Props> = (props) => {
 
             images.forEach((image) => formData.append("images", image));
 
+            formData.append("payload", JSON.stringify(props.uploadPayload));
+
             const message = await props.uploadHandler?.(formData);
             if (message?.error) alert(message.error);
             if (message?.success) {
@@ -94,11 +95,17 @@ const UploadImageWrapper: FC<Props> = (props) => {
 
     return (
         <Dialog>
-            <DialogTrigger className={cn(props.className)}>
+            <DialogTrigger asChild className={cn(props.className)}>
                 {props.children}
             </DialogTrigger>
             <DialogContent className="w-full max-w-[90svw] sm:max-w-[80svw] md:max-w-[70svw] lg:max-w-[60svw]">
-                <form ref={formRef} action={handleUploadImage}>
+                <form
+                    ref={formRef}
+                    action={handleUploadImage}
+                    onSubmit={(e) => {
+                        e.stopPropagation();
+                    }}
+                >
                     <DialogHeader>
                         <DialogTitle>
                             {props.title || "Tải ảnh lên"}

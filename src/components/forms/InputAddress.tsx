@@ -5,7 +5,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { FC, useEffect, useState, useTransition } from "react";
+import { FC, useEffect, useState } from "react";
 
 type Address = {
     province: string;
@@ -39,7 +39,7 @@ const InputAddress: FC<Props> = ({ onChange, address }) => {
             case "w":
                 url += `&d=${code}`;
         }
-        console.log(url);
+
         return fetch(url, {
             cache: "no-cache",
         });

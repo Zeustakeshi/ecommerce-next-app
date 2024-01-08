@@ -40,7 +40,7 @@ const NavbarShop = () => {
     const pathname = usePathname();
 
     return (
-        <nav className="w-full flex-1">
+        <nav className="w-full flex-1 hidden md:block">
             {navbarLinks.map((link, index) => {
                 return (
                     <Link
