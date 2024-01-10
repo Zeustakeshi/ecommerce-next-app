@@ -1,8 +1,9 @@
+import { createDraftProductAction } from "@/actions/product.action";
 import { Button } from "@/components/ui/button";
-import React from "react";
+import { nanoid } from "@/lib/utils";
 import { Payment, columns } from "./columns";
 import { DataTable } from "./data-table";
-import { nanoid } from "@/lib/utils";
+import ButtonFormStatus from "@/components/buttons/ButtonFormStatus";
 
 async function getData(): Promise<Payment[]> {
     // Fetch data from your API here.
@@ -41,13 +42,19 @@ async function getData(): Promise<Payment[]> {
 
 const ShopProduct = async () => {
     const data = await getData();
+
     return (
         <div className="w-full h-full space-y-5">
             <h1 className="text-2xl font-semibold text-muted-foreground">
                 Quản lý sản phẩm của bạn
             </h1>
             <div className="w-full flex justify-end items-center">
-                <Button>Thêm sản phẩm</Button>
+                <form action={createDraftProductAction}>
+                    <ButtonFormStatus
+                        label="Thêm sản phẩm"
+                        pendingLabel="Đang tạo mới"
+                    />
+                </form>
             </div>
             <div className="container mx-auto py-10">
                 <DataTable columns={columns} data={data} />

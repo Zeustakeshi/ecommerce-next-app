@@ -1,63 +1,37 @@
 import { auth } from "@/auth";
 import BasicForm from "@/components/forms/product/BasicForm";
 import db from "@/lib/db";
+import { findProductById } from "@/lib/productUtils";
 import { redirect } from "next/navigation";
 import React from "react";
 
-const getProduct = async (productId: string) => {
-    return await db.product.findUnique({
-        where: {
-            id: productId || "",
-        },
-        select: {
-            id: true,
-            categoryName: true,
-            description: true,
-            images: {
-                select: {
-                    imageUrl: true,
-                },
-            },
-            name: true,
-        },
-    });
-};
-
-const createNewProduct = async (shopId: string) => {
-    return await db.product.create({
-        data: {
-            shopId: shopId,
-            isPublic: false,
-            detail: { create: {} },
-        },
-        select: {
-            id: true,
-            categoryName: true,
-            description: true,
-            images: {
-                select: {
-                    imageUrl: true,
-                },
-            },
-            name: true,
-        },
-    });
-};
-
 const ProductBasicInfo = async ({
-    searchParams,
+    params,
 }: {
+    params: any;
     searchParams: { [key: string]: string | string[] | undefined };
 }) => {
     const session = await auth();
 
     if (!session?.user.id) redirect("/login");
 
-    const productId = searchParams.id as string;
-    let product = await getProduct(productId);
+    const productId = params.id as string;
 
-    if (!product) {
-        product = await createNewProduct(session.user.id);
+    let product = await findProductById(productId, {
+        shopId: true,
+        id: true,
+        categoryName: true,
+        description: true,
+        images: {
+            select: {
+                imageUrl: true,
+            },
+        },
+        name: true,
+    });
+
+    if (!product || product.shopId !== session.user.id) {
+        redirect("/manager/shop/products");
     }
 
     return (

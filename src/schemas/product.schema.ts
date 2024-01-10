@@ -1,3 +1,4 @@
+import { fomatCurrency } from "@/lib/utils";
 import e from "express";
 import * as z from "zod";
 
@@ -116,21 +117,43 @@ export const ProductShipInfoSchema = z.object({
         }),
     ship: z.object({
         shipMethod: z.string(),
-        shippingCost: z.number().min(0),
+        shipCost: z.number().min(0),
     }),
 });
 
 export const ProductSalesInfoSchema = z.object({
-    price: z.number().min(1000, { message: "Giá phải ít nhất 1000đ" }),
-    inventory: z.number().min(1, {
-        message: "Phải có ít nhất 1 sản phẩm trong kho",
-    }),
+    price: z
+        .number({
+            invalid_type_error: "Giá sản phẩm phải có kiểu dữ liệu số",
+        })
+        .min(1000, { message: "Giá phải ít nhất 1000đ" })
+        .max(10000000, {
+            message: `Chúng tôi hiện cho phép bán các sản phẩm có gía dưới ${fomatCurrency(
+                10000000
+            )}`,
+        }),
+    inventory: z
+        .number({
+            invalid_type_error: "Số lượng kho hàng phải có kiểu dữ liệu số",
+        })
+        .min(1, {
+            message: "Phải có ít nhất 1 sản phẩm trong kho",
+        })
+        .max(50000, {
+            message:
+                "Số sản phẩm tối đa của bạn chỉ có thể  <= 50,000 sản phẩm",
+        }),
 });
 
 export const ProductDetailSchema = z.object({
     brand: z.optional(z.string()),
     origin: z.optional(z.string()),
     isNew: z.optional(z.boolean().default(true)),
+    moreDescription: z
+        .string({
+            required_error: "Đây là trường bắt buộc khi tạo sản phẩm",
+        })
+        .min(1000),
 });
 
 export const ProductBasicInfoSchema = z.object({

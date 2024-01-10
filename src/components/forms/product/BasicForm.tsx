@@ -47,10 +47,13 @@ const BasicForm = (props: Props) => {
     });
 
     const handleSaveAndNextStep = async () => {
-        const status = await form.trigger(["category", "description", "name"], {
-            shouldFocus: true,
-        });
-        if (!status) return;
+        const isValidData = await form.trigger(
+            ["category", "description", "name"],
+            {
+                shouldFocus: true,
+            }
+        );
+        if (!isValidData) return;
 
         startSaving(async () => {
             setError(undefined);
@@ -60,7 +63,9 @@ const BasicForm = (props: Props) => {
             if (message.error) setError(message.error);
             if (message.success) {
                 router.push(
-                    "/manager/shop/products/new/more-info?id=clr5491r70003jb1hojn9zc6s"
+                    `/manager/shop/products/new/${form.getValues(
+                        "id"
+                    )}/more-info`
                 );
                 setSuccess(message.success);
             }
@@ -68,10 +73,13 @@ const BasicForm = (props: Props) => {
     };
 
     const handleSaveDraft = async () => {
-        const status = await form.trigger(["category", "description", "name"], {
-            shouldFocus: true,
-        });
-        if (!status) return;
+        const isValidData = await form.trigger(
+            ["category", "description", "name"],
+            {
+                shouldFocus: true,
+            }
+        );
+        if (!isValidData) return;
         startSaveDraft(async () => {
             setError(undefined);
             setSuccess(undefined);

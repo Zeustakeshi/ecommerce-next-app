@@ -157,19 +157,21 @@ model Product {
 }
 
 model ProductDetail {
-    productId            String    @id
-    price                Decimal?  @db.Money
+    productId            String       @id
+    price                Int?
     brand                String?
     origin               String?
+    shipMethods          ShipMethod[]
+    moreDescription      String?
     expirationdate       DateTime?
     inventory            Int?
-    isNew                Boolean?
+    isNew                Boolean?     @default(true)
     weightAfterPackaging Decimal?
     width                Decimal?
     height               Decimal?
     long                 Decimal?
     taxAmount            Decimal?
-    product              Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+    product              Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model ProductImage {
@@ -207,4 +209,11 @@ model Payment {
     requestId     String
     paymentOption String?
     ShopProfile   ShopProfile[]
+}
+
+model ShipMethod {
+    id            String          @id @default(cuid())
+    name          String
+    description   String
+    ProductDetail ProductDetail[]
 }

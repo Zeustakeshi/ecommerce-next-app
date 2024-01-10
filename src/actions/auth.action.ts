@@ -12,7 +12,7 @@ export const loginAction = async (value: z.infer<typeof LoginSchema>) => {
     const validatedField = LoginSchema.safeParse(value);
 
     if (!validatedField.success) {
-        return { error: "Thông tin đăng nhập sai định dạng" };
+        return { error: "thông tin đăng nhập không hợp lệ" };
     }
 
     const { email, password } = validatedField.data;
@@ -45,7 +45,7 @@ export const registerAction = async (value: z.infer<typeof RegisterSchema>) => {
     const validatedField = RegisterSchema.safeParse(value);
 
     if (!validatedField.success) {
-        return { error: "Có lỗi trong quá trình đăng ký" };
+        return { error: "Thông tin đăng ký không hợp lệ" };
     }
 
     const { username, email, password } = validatedField.data;
