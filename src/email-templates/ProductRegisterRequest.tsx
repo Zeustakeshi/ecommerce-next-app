@@ -32,111 +32,111 @@ type Props = {
 const ProductRegisterRequest = ({ product, shop }: Props) => {
     const baseUrl = process.env.BASE_URL;
     return (
-        <Tailwind>
+        <Html>
+            <Preview>
+                Yêu cầu đăng ký kinh doanh sản phẩm {product.name}{" "}
+            </Preview>
+
             <Head />
-            <Html>
-                <Preview>
-                    Yêu cầu đăng ký kinh doanh sản phẩm {product.name}{" "}
-                </Preview>
-                <>
-                    <Body style={main}>
-                        <Container style={container}>
-                            <Section>
-                                <Column>
+            <Body style={main}>
+                <Container style={container}>
+                    <Section>
+                        <Column>
+                            <Img
+                                style={sectionLogo}
+                                src={`${baseUrl}/logo.png`}
+                                width="155"
+                                height="31"
+                                alt="TDMU eStore"
+                            />
+                        </Column>
+                    </Section>
+
+                    <Section style={paragraphContent}>
+                        <Hr style={hr} />
+                        <Text style={heading}>Yêu cầu đăng ký sản phẩm</Text>
+                        <Text style={paragraph}>
+                            Xin chào Admin TDMU eStore,
+                        </Text>
+                        <Text style={paragraph}>
+                            Chúng tôi muốn thông báo rằng có một yêu cầu đăng ký
+                            sản phẩm mới từ một người bán trên nền tảng của bạn.
+                        </Text>
+                    </Section>
+
+                    <Section style={paragraphContent}>
+                        <Text style={{ ...paragraph, fontWeight: 500 }}>
+                            Thông tin Sản phẩm:
+                        </Text>
+                        <ul className="p-0">
+                            <li>
+                                <Text style={paragraph}>
+                                    Tên sản phẩm: {product.name}
+                                </Text>
+                            </li>
+                            <li>
+                                <Text style={paragraph}>
+                                    Tên cửa hàng: {shop.name}
+                                </Text>
+                            </li>
+                            <li>
+                                <Text style={paragraph}>
+                                    Địa chỉ email: {shop.email}
+                                </Text>
+                            </li>
+                        </ul>
+                    </Section>
+                    <Section style={paragraphContent}>
+                        <Text style={{ ...paragraph, fontWeight: 500 }}>
+                            Mô tả sản phẩm:{" "}
+                        </Text>
+                        <Text style={paragraph}>{product.description}</Text>
+                    </Section>
+
+                    <Section style={paragraphContent}>
+                        <Button
+                            style={{
+                                textAlign: "center",
+                                paddingTop: 8,
+                                paddingBottom: 8,
+                                paddingLeft: 20,
+                                paddingRight: 20,
+                                background: "blue",
+                                color: "white",
+                                fontWeight: 600,
+                                fontSize: "1.125rem",
+                                display: "inline-block",
+                                borderRadius: 20,
+                            }}
+                            href={`${baseUrl}/manager/admin/products/pending`}
+                        >
+                            Xem ngay
+                        </Button>
+                    </Section>
+
+                    <Section style={paragraphContent}>
+                        <Text style={paragraph}>Ảnh minh họa: </Text>
+                        <div className="">
+                            {product.images.map((url, index) => {
+                                return (
                                     <Img
-                                        style={sectionLogo}
-                                        src={`${baseUrl}/logo.png`}
-                                        width="155"
-                                        height="31"
-                                        alt="TDMU eStore"
+                                        key={index}
+                                        style={{
+                                            width: "100%",
+                                            height: "100%",
+                                            objectFit: "cover",
+                                        }}
+                                        src={url}
+                                        alt={`ảnh minh họa ${index + 1}`}
                                     />
-                                </Column>
-                            </Section>
-
-                            <Section style={paragraphContent}>
-                                <Hr style={hr} />
-                                <Text style={heading}>
-                                    Yêu cầu đăng ký sản phẩm
-                                </Text>
-                                <Text style={paragraph}>
-                                    Xin chào Admin TDMU eStore,
-                                </Text>
-                                <Text style={paragraph}>
-                                    Chúng tôi muốn thông báo rằng có một yêu cầu
-                                    đăng ký sản phẩm mới từ một người bán trên
-                                    nền tảng của bạn.
-                                </Text>
-                            </Section>
-
-                            <Section style={paragraphContent}>
-                                <Text
-                                    style={paragraph}
-                                    className="font-semibold"
-                                >
-                                    Thông tin Sản phẩm:
-                                </Text>
-                                <ul className="p-0">
-                                    <li>
-                                        <Text style={paragraph}>
-                                            Tên sản phẩm: {product.name}
-                                        </Text>
-                                    </li>
-                                    <li>
-                                        <Text style={paragraph}>
-                                            Tên cửa hàng: {shop.name}
-                                        </Text>
-                                    </li>
-                                    <li>
-                                        <Text style={paragraph}>
-                                            Địa chỉ email: {shop.email}
-                                        </Text>
-                                    </li>
-                                </ul>
-                            </Section>
-                            <Section style={paragraphContent}>
-                                <Text
-                                    style={paragraph}
-                                    className="font-semibold"
-                                >
-                                    Mô tả sản phẩm:{" "}
-                                </Text>
-                                <Text style={paragraph}>
-                                    {product.description}
-                                </Text>
-                            </Section>
-
-                            <Section style={paragraphContent}>
-                                <Button
-                                    className="text-center px-5 py-2 rounded-md bg-blue-600 text-white font-semibold text-lg inline-block"
-                                    href={`${baseUrl}/manager/admin/products/pending`}
-                                >
-                                    Xem ngay
-                                </Button>
-                            </Section>
-
-                            <Section style={paragraphContent}>
-                                <Text style={paragraph}>Ảnh minh họa: </Text>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                                    {product.images.map((url, index) => {
-                                        return (
-                                            <Img
-                                                key={index}
-                                                className="w-full h-full object-cover"
-                                                src={url}
-                                                alt={`ảnh minh họa ${
-                                                    index + 1
-                                                }`}
-                                            />
-                                        );
-                                    })}
-                                </div>
-                                <Hr style={hr} />
-                            </Section>
-                        </Container>
-                    </Body>
-                </>
-            </Html>
-        </Tailwind>
+                                );
+                            })}
+                        </div>
+                        <Hr style={hr} />
+                    </Section>
+                </Container>
+            </Body>
+        </Html>
     );
 };
 
@@ -146,12 +146,12 @@ const main = {
         '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
 };
 
-const sectionLogo = {
-    padding: "0 40px",
+const imageCover = {
+    width: "100%",
 };
 
-const headerBlue = {
-    marginTop: "-1px",
+const sectionLogo = {
+    padding: "0 40px",
 };
 
 const container = {
