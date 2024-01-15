@@ -33,12 +33,12 @@ const ProductRegisterRequest = ({ product, shop }: Props) => {
     const baseUrl = process.env.BASE_URL;
     return (
         <Html>
+            <Preview>
+                Yêu cầu đăng ký kinh doanh sản phẩm {product.name}{" "}
+            </Preview>
             <Tailwind>
                 <Head />
                 <>
-                    <Preview>
-                        Yêu cầu đăng ký kinh doanh sản phẩm {product.name}{" "}
-                    </Preview>
                     <Body style={main}>
                         <Container style={container}>
                             <Section>
