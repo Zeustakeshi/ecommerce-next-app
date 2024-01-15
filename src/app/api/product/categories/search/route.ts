@@ -39,7 +39,7 @@ const getCategoryFromDb = async (keyword: string, depth: number) => {
             ...categories.map((category) => JSON.stringify(category))
         );
 
-        await redis.expire(redisKey, 15 * 60); // 15 minutes
+        await redis.expire(redisKey, 5 * 60); // 5 minutes
     }
     return categories;
 };
@@ -102,6 +102,7 @@ export const GET = async (req: NextRequest) => {
 
         return NextResponse.json(categories);
     } catch (error) {
+        console.log(error);
         return NextResponse.json(error, {
             status: 500,
         });

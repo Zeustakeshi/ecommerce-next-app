@@ -13,6 +13,7 @@ export const findProductById = async (
         select: {
             shopId: true,
             id: true,
+
             ...select,
         },
     });

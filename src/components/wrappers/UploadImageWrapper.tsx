@@ -25,6 +25,7 @@ type Props = {
     children: ReactNode;
     multiple?: boolean;
     maxImage?: number;
+    minImage?: number;
     title?: string;
     description?: string;
     submitLabel?: string;
@@ -72,6 +73,11 @@ const UploadImageWrapper: FC<Props> = (props) => {
 
         if (props.maxImage && images.length > props.maxImage) {
             alert(`Bạn chỉ có thể tải lên tối đa ${props.maxImage} ảnh`);
+            return;
+        }
+
+        if (props.minImage && images.length < props.minImage) {
+            alert(`Bạn cần tải lên tối thiểu ${props.minImage} ảnh`);
             return;
         }
 

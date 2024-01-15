@@ -1,10 +1,7 @@
 "use client";
 import { updateShopDescriptionAction } from "@/actions/update.action";
 import { cn } from "@/lib/utils";
-import {
-    UpdateShopDescription,
-    UpdateShopNameSchema,
-} from "@/schemas/update.schema";
+import { UpdateShopDescription } from "@/schemas/update.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Edit } from "lucide-react";
 import { useState, useTransition } from "react";
@@ -14,7 +11,6 @@ import { Alert } from "../ui/alert";
 import { Button, buttonVariants } from "../ui/button";
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogFooter,
     DialogHeader,
@@ -28,7 +24,6 @@ import {
     FormItem,
     FormMessage,
 } from "../ui/form";
-import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 
 type Props = {
@@ -39,7 +34,7 @@ type Props = {
 };
 
 const ShopDescription = (props: Props) => {
-    const [updating, startUpdate] = useTransition();
+    const [updating, setUpdating] = useState<boolean>(false);
     const [success, setSuccess] = useState<string | undefined>();
     const [error, setError] = useState<string | undefined>();
 
@@ -55,16 +50,16 @@ const ShopDescription = (props: Props) => {
             setSuccess("Không có thay đổi gì");
             return;
         }
-        startUpdate(async () => {
-            const message = await updateShopDescriptionAction(value);
-            setError(undefined);
-            setSuccess(undefined);
-            if (message?.error) setError(message.error);
-            if (message?.success) {
-                setSuccess(message.success);
-                form.reset(value);
-            }
-        });
+        setUpdating(true);
+        const message = await updateShopDescriptionAction(value);
+        setError(undefined);
+        setSuccess(undefined);
+        if (message?.error) setError(message.error);
+        if (message?.success) {
+            setSuccess(message.success);
+            form.reset(value);
+        }
+        setUpdating(false);
     };
 
     if (!props.canEdit)

@@ -21,7 +21,7 @@ import { registerAction } from "@/actions/auth.action";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 
 const RegisterForm = () => {
-    const [isPending, startRegister] = useTransition();
+    const [isPending, setPending] = useState<boolean>(false);
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
@@ -31,13 +31,12 @@ const RegisterForm = () => {
     });
 
     const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
-        startRegister(() => {
-            registerAction(data).then((message) => {
-                if (message) {
-                    setError(message.error);
-                    setSuccess(message.success);
-                }
-            });
+        setPending(true);
+        registerAction(data).then((message) => {
+            if (!message) return;
+            setError(message.error);
+            setSuccess(message.success);
+            setPending(false);
         });
     };
 

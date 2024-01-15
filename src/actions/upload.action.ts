@@ -6,6 +6,11 @@ import { nanoid } from "@/lib/utils";
 import { UploadApiResponse } from "cloudinary";
 import { revalidatePath } from "next/cache";
 
+/** TODO: Refactor image uploader */
+const uploadImageToCloud = async () => {};
+const updateImageUrlDatabase = async () => {};
+const deleteExistedImage = async () => {};
+
 type UploaderParams = {
     userId: string;
     deleteExistedImageHandler: () => Promise<void>;
@@ -13,7 +18,6 @@ type UploaderParams = {
     images: File[];
     folder: string;
 };
-
 const imageUploader = async ({
     userId,
     deleteExistedImageHandler,

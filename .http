@@ -1,8 +1,8 @@
-POST http://localhost:3000/api/result-payment/momo_ipn
+POST https://gexpress.onrender.com/GEpress/api/v1/transportprice
 Content-Type: application/json
 
 {
-    "hi": "hi"
+    "weight": 2000
 }
 
 

@@ -41,8 +41,8 @@ const ProductBasicInfo = async ({
             </h2>
             <div className="mt-5 p-5">
                 <BasicForm
+                    productId={product.id}
                     defaultValues={{
-                        id: product.id,
                         category: product?.categoryName || undefined,
                         name: product?.name || undefined,
                         images: product?.images?.map((image) => image.imageUrl),

@@ -1,10 +1,7 @@
 import NextAuth from "next-auth";
+import PrismaAdaper from "./adapters/prima.adapter";
 import authConfigs from "./auth.configs";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import db from "./lib/db";
-import CustomPrismaAdaper from "./lib/customPrismaAdapter";
-import { UserRole } from "@prisma/client";
-import { use } from "react";
 
 export const {
     handlers: { GET, POST },
@@ -15,7 +12,7 @@ export const {
     pages: {
         signIn: "/login",
     },
-    adapter: CustomPrismaAdaper(db),
+    adapter: PrismaAdaper(db),
     session: { strategy: "jwt" },
     callbacks: {
         async signIn({ user, account }) {

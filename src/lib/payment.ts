@@ -131,6 +131,7 @@ export const paymentWithMoMo = async ({
     };
     // Thực hiện yêu cầu thanh toán sử dụng fetch
     const response = await fetch(`${process.env.MOMO_URL}/create`, {
+        cache: "no-store",
         method: "POST",
         headers: {
             "Content-Type": "application/json",

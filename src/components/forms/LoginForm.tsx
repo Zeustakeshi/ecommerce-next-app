@@ -23,20 +23,19 @@ const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [success, setSuccess] = useState<string | undefined>("");
     const [error, setError] = useState<string | undefined>("");
-    const [isPending, startLogin] = useTransition();
+    const [isPending, setPending] = useState(false);
 
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
     });
 
     const onSubmit = (data: z.infer<typeof LoginSchema>) => {
-        startLogin(() => {
-            loginAction(data).then((message) => {
-                if (message) {
-                    setSuccess(message.success);
-                    setError(message.error);
-                }
-            });
+        setPending(true);
+        loginAction(data).then((message) => {
+            if (!message) return;
+            setSuccess(message.success);
+            setError(message.error);
+            setPending(false);
         });
     };
 

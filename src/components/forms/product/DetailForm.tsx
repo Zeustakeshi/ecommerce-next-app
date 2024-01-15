@@ -51,8 +51,8 @@ type Props = {
 const ProductDetailForm: FC<Props> = ({ defaultValues, productId }) => {
     const [success, setSuccess] = useState<string | undefined>();
     const [error, setError] = useState<string | undefined>();
-    const [savingDraft, startSaveDraft] = useTransition();
-    const [saving, startSaving] = useTransition();
+    const [savingDraft, setSavingDraft] = useState<boolean>(false);
+    const [saving, setSaving] = useState<boolean>(false);
 
     const form = useForm<z.infer<typeof ProductDetailSchema>>({
         resolver: zodResolver(ProductDetailSchema),
@@ -63,40 +63,44 @@ const ProductDetailForm: FC<Props> = ({ defaultValues, productId }) => {
 
     const goBack = async () => {
         const isValidData = await form.trigger();
-        if (isValidData) router.back();
+        if (isValidData)
+            if (isValidData)
+                router.replace(
+                    `/manager/shop/products/new/${productId}/basic-info`
+                );
     };
     const nextStep = async () => {
         const isValidData = await form.trigger();
         if (isValidData) {
-            startSaving(async () => {
-                setSuccess(undefined);
-                setError(undefined);
-                const message = await saveProductDetailAction(
-                    form.getValues(),
-                    productId
+            setSuccess(undefined);
+            setError(undefined);
+            setSaving(true);
+            const message = await saveProductDetailAction(
+                form.getValues(),
+                productId
+            );
+            if (message.success) {
+                setSuccess(message.success);
+                router.push(
+                    `/manager/shop/products/new/${productId}/sales-info`
                 );
-                if (message.success) {
-                    setSuccess(message.success);
-                    router.push(
-                        `/manager/shop/products/new/${productId}/sales-info`
-                    );
-                } else if (message.error) setError(message.error);
-            });
+            } else if (message.error) setError(message.error);
+            setSaving(false);
         }
     };
     const saveDraft = async () => {
         const isValidData = await form.trigger();
         if (isValidData) {
-            startSaveDraft(async () => {
-                setSuccess(undefined);
-                setError(undefined);
-                const message = await saveProductDetailAction(
-                    form.getValues(),
-                    productId
-                );
-                if (message.success) setSuccess(message.success);
-                else if (message.error) setError(message.error);
-            });
+            setSuccess(undefined);
+            setError(undefined);
+            setSaving(true);
+            const message = await saveProductDetailAction(
+                form.getValues(),
+                productId
+            );
+            if (message.success) setSuccess(message.success);
+            else if (message.error) setError(message.error);
+            setSaving(false);
         }
     };
 
