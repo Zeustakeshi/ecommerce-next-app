@@ -340,7 +340,7 @@ export const completeCreateProductAction = async (productId: string) => {
 
         await mailSender({
             from: process.env.MAIL_USER,
-            to: session.user.email,
+            to: process.env.ADMIN_EMAIL,
             subject: "Yêu cầu Đăng Ký Sản Phẩm",
             html: emailHtml,
         });
