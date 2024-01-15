@@ -20,15 +20,18 @@ const InputCategory = (props: Props) => {
     const [searchValue, setSearchValue] = React.useState<string>("");
     const [categories, setCategories] = useState<{ name: string }[]>([]);
     const [answer, setAnswer] = useState<string | undefined>(props.category);
-    const [searching, startSearch] = useTransition();
+    const [searching, setSearching] = useState<boolean>(false);
 
     const searchValueDebounce = useDebounce(searchValue, 600);
 
     useEffect(() => {
         if (!searchValueDebounce.trim()) setCategories([]);
-        startSearch(async () => {
+
+        (async () => {
+            setSearching(true);
             await handleSearch(searchValue);
-        });
+            setSearching(false);
+        })();
     }, [searchValueDebounce]);
 
     const handleSearch = async (keyword: string) => {
@@ -76,7 +79,7 @@ const InputCategory = (props: Props) => {
                         </div>
                     ) : (
                         <div>
-                            {categories.map((category, index) => {
+                            {categories?.map((category, index) => {
                                 return (
                                     <Button
                                         key={index}

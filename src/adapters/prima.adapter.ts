@@ -1,8 +1,8 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import db from "./db";
+import db from "../lib/db";
 import { Adapter } from "@auth/core/adapters";
 import { UserRole } from "@prisma/client";
-const CustomPrismaAdaper = (p: typeof db): Adapter => {
+const PrismaAdaper = (p: typeof db): Adapter => {
     return {
         ...PrismaAdapter(p),
         createUser(user) {
@@ -28,4 +28,4 @@ const CustomPrismaAdaper = (p: typeof db): Adapter => {
     };
 };
 
-export default CustomPrismaAdaper;
+export default PrismaAdaper;

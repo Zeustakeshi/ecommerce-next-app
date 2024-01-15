@@ -19,8 +19,8 @@ const Loading = () => {
                     height={200}
                 ></Image>
             </div>
-            <p className="text-lg font-semiboldm my-5">
-                Đang chuyển trang đợi xíu nhé ...........
+            <p className="text-sm md:text-lg font-semiboldm my-5 text-muted-foreground">
+                Đang chuyển hướng đợi xíu nhé
             </p>
         </MaxWidthWrapper>
     );

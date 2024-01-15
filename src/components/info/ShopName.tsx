@@ -1,8 +1,5 @@
 "use client";
-import {
-    updateShopDescriptionAction,
-    updateShopNameAction,
-} from "@/actions/update.action";
+import { updateShopNameAction } from "@/actions/update.action";
 import { cn } from "@/lib/utils";
 import { UpdateShopNameSchema } from "@/schemas/update.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,7 +11,6 @@ import { Alert } from "../ui/alert";
 import { Button, buttonVariants } from "../ui/button";
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogFooter,
     DialogHeader,
@@ -38,7 +34,7 @@ type Props = {
 };
 
 const ShopName = (props: Props) => {
-    const [updating, startUpdate] = useTransition();
+    const [updating, setUpdating] = useState<boolean>(false);
     const [success, setSuccess] = useState<string | undefined>();
     const [error, setError] = useState<string | undefined>();
 
@@ -54,17 +50,16 @@ const ShopName = (props: Props) => {
             setSuccess("Không có thay đổi gì");
             return;
         }
-
-        startUpdate(async () => {
-            const message = await updateShopNameAction(value);
-            setError(undefined);
-            setSuccess(undefined);
-            if (message?.error) setError(message.error);
-            if (message?.success) {
-                setSuccess(message.success);
-                form.reset(value);
-            }
-        });
+        setUpdating(true);
+        const message = await updateShopNameAction(value);
+        setError(undefined);
+        setSuccess(undefined);
+        if (message?.error) setError(message.error);
+        if (message?.success) {
+            setSuccess(message.success);
+            form.reset(value);
+        }
+        setUpdating(false);
     };
 
     if (!props.canEdit)

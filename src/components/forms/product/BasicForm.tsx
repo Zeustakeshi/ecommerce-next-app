@@ -24,8 +24,8 @@ import InputCategory from "../InputCategory";
 import { useRouter } from "next/navigation";
 
 type Props = {
+    productId: string;
     defaultValues?: {
-        id?: string;
         name?: string;
         category?: string;
         images?: string[];
@@ -36,8 +36,8 @@ type Props = {
 const BasicForm = (props: Props) => {
     const [success, setSuccess] = useState<string | undefined>();
     const [error, setError] = useState<string | undefined>();
-    const [savingDraft, startSaveDraft] = useTransition();
-    const [saving, startSaving] = useTransition();
+    const [savingDraft, setSavingDraft] = useState<boolean>(false);
+    const [saving, setSaving] = useState<boolean>(false);
 
     const router = useRouter();
 
@@ -55,21 +55,23 @@ const BasicForm = (props: Props) => {
         );
         if (!isValidData) return;
 
-        startSaving(async () => {
-            setError(undefined);
-            setSuccess(undefined);
-            if (!props.defaultValues?.id) return;
-            const message = await saveBasicInfoAction(form.getValues());
-            if (message.error) setError(message.error);
-            if (message.success) {
-                router.push(
-                    `/manager/shop/products/new/${form.getValues(
-                        "id"
-                    )}/more-info`
-                );
-                setSuccess(message.success);
-            }
-        });
+        setError(undefined);
+        setSuccess(undefined);
+        if (!props.productId) return;
+
+        setSaving(true);
+        const message = await saveBasicInfoAction(
+            form.getValues(),
+            props.productId
+        );
+        if (message.error) setError(message.error);
+        if (message.success) {
+            router.push(
+                `/manager/shop/products/new/${props.productId}/more-info`
+            );
+            setSuccess(message.success);
+        }
+        setSaving(false);
     };
 
     const handleSaveDraft = async () => {
@@ -80,16 +82,18 @@ const BasicForm = (props: Props) => {
             }
         );
         if (!isValidData) return;
-        startSaveDraft(async () => {
-            setError(undefined);
-            setSuccess(undefined);
-            if (!props.defaultValues?.id) return;
-            const message = await saveBasicInfoAction(form.getValues());
-            if (message.error) setError(message.error);
-            if (message.success) setSuccess(message.success);
-        });
+        setError(undefined);
+        setSuccess(undefined);
+        if (!props.productId) return;
+        setSavingDraft(true);
+        const message = await saveBasicInfoAction(
+            form.getValues(),
+            props.productId
+        );
+        if (message.error) setError(message.error);
+        if (message.success) setSuccess(message.success);
+        setSavingDraft(false);
     };
-
     return (
         <Form {...form}>
             <div className="space-y-5">
@@ -180,9 +184,10 @@ const BasicForm = (props: Props) => {
                     <UploadImageWrapper
                         uploadHandler={uploadProductImageAction}
                         uploadPayload={{
-                            productId: props.defaultValues?.id,
+                            productId: props.productId,
                         }}
                         maxImage={5}
+                        minImage={3}
                         multiple
                         className="block my-3"
                     >

@@ -1,12 +1,11 @@
-// const shipMethod =
-
-type ShipPayload = {
-    weight: number;
-    height: number;
-    width: number;
-    long: number;
-};
+import db from "@/lib/db";
+import { NextResponse } from "next/server";
 
 export const GET = async () => {
-    return;
+    try {
+        const shipMethod = await db.shipMethod.findMany();
+        return NextResponse.json(shipMethod);
+    } catch (error) {
+        NextResponse.json(error);
+    }
 };

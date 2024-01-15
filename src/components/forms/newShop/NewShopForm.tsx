@@ -18,35 +18,35 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import InputAddress from "../InputAddress";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 
 type Props = {};
 
 const NewShopForm = (props: Props) => {
-    const [isPending, startPayment] = useTransition();
+    const [isPending, setPending] = useState<boolean>(false);
 
     const form = useForm<z.infer<typeof NewShopSchema>>({
         resolver: zodResolver(NewShopSchema),
     });
 
     const onSubmit = async (values: z.infer<typeof NewShopSchema>) => {
-        startPayment(async () => {
-            try {
-                const response = await fetch("/api/shop/new", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(values),
-                    cache: "no-store",
-                });
-                const paymentUrl = await response.json();
-                if (typeof paymentUrl === "string")
-                    window.location.replace(paymentUrl);
-            } catch (error) {
-                throw error;
-            }
-        });
+        try {
+            setPending(true);
+            const response = await fetch("/api/shop/new", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(values),
+                cache: "no-store",
+            });
+            const paymentUrl = await response.json();
+            if (typeof paymentUrl === "string")
+                window.location.replace(paymentUrl);
+        } catch (error) {
+            throw error;
+        }
+        setPending(false);
     };
 
     return (

@@ -10,7 +10,7 @@ import NextAuth from "next-auth";
 
 export const { auth } = NextAuth(authConfig);
 
-export default auth((req) => {
+export default auth(async (req) => {
     const { nextUrl } = req;
     const pathname = nextUrl.pathname;
 
